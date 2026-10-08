@@ -38,9 +38,9 @@ if st.button("Evaluate Writing", type="primary"):
     else:
         with st.spinner("Evaluating against IELTS public band descriptors..."):
             try:
-                # Configure the free Gemini 1.5 Flash model
+                # Configure the free Gemini API
                 genai.configure(api_key=api_key)
-                model = genai.GenerativeModel('gemini-1.5-flash')
+                model = genai.GenerativeModel('gemini-pro')
                 
                 # The strict IELTS Examiner Prompt
                 prompt = f"""
@@ -77,4 +77,4 @@ if st.button("Evaluate Writing", type="primary"):
                 
             except Exception as e:
                 st.error(f"An error occurred: {e}")
-              
+                
