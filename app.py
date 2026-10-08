@@ -2,9 +2,16 @@ import streamlit as st
 import google.generativeai as genai
 
 # --- Page Configuration ---
-st.set_page_config(page_title="IELTS Evaluator", page_icon="📝", layout="centered")
+st.set_page_config(page_title="Cambridge IELTS Club", page_icon="🎓", layout="centered")
 
-st.title("📝 Cambridge IELTS Club Writing Evaluator")
+# --- Header with Logo ---
+col1, col2 = st.columns([1, 4])
+with col1:
+    st.image("54011.jpg", width=80)
+with col2:
+    st.markdown("### Cambridge IELTS Club Writing Evaluator")
+
+st.markdown("Evaluate your IELTS Task 1 and Task 2 against official public band descriptors.")
 
 st.markdown("Evaluate your IELTS Task 1 and Task 2 against official public band descriptors.")
 
