@@ -4,7 +4,8 @@ import google.generativeai as genai
 # --- Page Configuration ---
 st.set_page_config(page_title="IELTS Evaluator", page_icon="📝", layout="centered")
 
-st.title("📝 Free IELTS Writing Evaluator")
+st.title("📝 Cambridge IELTS Club Writing Evaluator")
+
 st.markdown("Evaluate your IELTS Task 1 and Task 2 against official public band descriptors.")
 
 # --- Sidebar / Configuration ---
