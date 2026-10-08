@@ -41,49 +41,42 @@ if st.button("Evaluate Writing", type="primary"):
                 # Configure the API
                 genai.configure(api_key=api_key)
                 
-                # DYNAMIC MODEL SELECTION: Automatically find a valid model for this API key
-                available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+                # Hardcoded strictly to the required gemini-3.8-flash model
+                model = genai.GenerativeModel('gemini-3.8-flash')
                 
-                if not available_models:
-                    st.error("Your API key does not have access to any text models. Please check your Google AI Studio account.")
-                else:
-                    # Prefer a 1.5 flash model if available, otherwise take the first working model
-                    chosen_model = next((m for m in available_models if '1.5-flash' in m), available_models[0])
-                    model = genai.GenerativeModel(chosen_model)
-                    
-                    # The strict IELTS Examiner Prompt
-                    prompt = f"""
-                    You are an expert, strict IELTS examiner. Evaluate the following IELTS {task_type} based strictly on the official IELTS public writing band descriptors.
-                    
-                    Question/Prompt: {question}
-                    Candidate's Response: {response_text}
-                    
-                    Provide your evaluation formatted in Markdown exactly as follows:
-                    
-                    ### 1. Task Achievement / Task Response (TA/TR): [Band Score]
-                    - **Feedback:** [Provide 2-3 specific sentences referencing the rubric, e.g., overview clarity, argument development, or word count].
-                    
-                    ### 2. Coherence and Cohesion (CC): [Band Score]
-                    - **Feedback:** [Provide 2-3 specific sentences regarding paragraphing, linking devices, and logical flow].
-                    
-                    ### 3. Lexical Resource (LR): [Band Score]
-                    - **Feedback:** [Provide 2-3 specific sentences regarding vocabulary range, precision, collocations, and spelling errors].
-                    
-                    ### 4. Grammatical Range and Accuracy (GRA): [Band Score]
-                    - **Feedback:** [Provide 2-3 specific sentences regarding sentence structures, complexity, and punctuation/grammar errors].
-                    
-                    ---
-                    ### 🎯 Overall Band Score: [Score]
-                    *Calculation Rule: Calculate the exact average of the 4 criteria. Apply official IELTS rounding rules (e.g., 6.25 rounds up to 6.5; 6.75 rounds up to 7.0; 6.125 rounds down to 6.0).*
-                    
-                    ### 🛠️ Key Corrections & Suggestions:
-                    Provide a bulleted list of 3 to 5 specific grammatical corrections, better vocabulary alternatives, or structural improvements based directly on quotes from the candidate's text.
-                    """
-                    
-                    # Call the API and display the result
-                    response = model.generate_content(prompt)
-                    st.markdown(response.text)
-                    
+                # The strict IELTS Examiner Prompt
+                prompt = f"""
+                You are an expert, strict IELTS examiner. Evaluate the following IELTS {task_type} based strictly on the official IELTS public writing band descriptors.
+                
+                Question/Prompt: {question}
+                Candidate's Response: {response_text}
+                
+                Provide your evaluation formatted in Markdown exactly as follows:
+                
+                ### 1. Task Achievement / Task Response (TA/TR): [Band Score]
+                - **Feedback:** [Provide 2-3 specific sentences referencing the rubric, e.g., overview clarity, argument development, or word count].
+                
+                ### 2. Coherence and Cohesion (CC): [Band Score]
+                - **Feedback:** [Provide 2-3 specific sentences regarding paragraphing, linking devices, and logical flow].
+                
+                ### 3. Lexical Resource (LR): [Band Score]
+                - **Feedback:** [Provide 2-3 specific sentences regarding vocabulary range, precision, collocations, and spelling errors].
+                
+                ### 4. Grammatical Range and Accuracy (GRA): [Band Score]
+                - **Feedback:** [Provide 2-3 specific sentences regarding sentence structures, complexity, and punctuation/grammar errors].
+                
+                ---
+                ### 🎯 Overall Band Score: [Score]
+                *Calculation Rule: Calculate the exact average of the 4 criteria. Apply official IELTS rounding rules (e.g., 6.25 rounds up to 6.5; 6.75 rounds up to 7.0; 6.125 rounds down to 6.0).*
+                
+                ### 🛠️ Key Corrections & Suggestions:
+                Provide a bulleted list of 3 to 5 specific grammatical corrections, better vocabulary alternatives, or structural improvements based directly on quotes from the candidate's text.
+                """
+                
+                # Call the API and display the result
+                response = model.generate_content(prompt)
+                st.markdown(response.text)
+                
             except Exception as e:
                 st.error(f"An error occurred: {e}")
                 
